@@ -1,12 +1,15 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 import Input from "../core/Input";
-import { SearchIcon } from "../core/icon/search";
-import { CartIcon } from "../core/icon/cart";
-import { UserIcon } from "../core/icon/user";
+import { SearchIcon } from "../icon/search";
+import { CartIcon } from "../icon/cart";
+import { UserIcon } from "../icon/user";
+import MegaMenu from "../core/MegaMenu";
+import SimpleMegaMenu from "../core/SimpleMegaMenu";
+import CategoryMegaMenu from "./CategoryMegaMenu";
 
 const navLinks = [
   { href: "/products", label: "Sản phẩm" },
@@ -15,36 +18,107 @@ const navLinks = [
   { href: "/contact", label: "Liên hệ" },
 ];
 
+type Underline = { left: number; width: number; opacity: number };
+
 const Header: React.FC = () => {
   const pathname = usePathname();
+  const navRef = useRef<HTMLElement | null>(null);
   const [showSearch, setShowSearch] = useState(false);
-  const [underlineStyle, setUnderlineStyle] = useState<{
-    left: number;
-    width: number;
-  }>({
+  const [underline, setUnderline] = useState<Underline>({
     left: 0,
     width: 0,
+    opacity: 0,
   });
 
-  useEffect(() => {
-    // tìm element active
-    const activeLink = document.querySelector<HTMLAnchorElement>(
-      `nav a[href^="${pathname}"]`
-    );
-    if (activeLink) {
-      setUnderlineStyle({
-        left: activeLink.offsetLeft,
-        width: activeLink.offsetWidth,
-      });
+  // Cập nhật vị trí underline theo đường dẫn hiện tại
+  const updateActiveUnderline = () => {
+    const container = navRef.current;
+    if (!container) return;
+
+    const anchors = Array.from(
+      container.querySelectorAll("a")
+    ) as HTMLAnchorElement[];
+
+    const path = pathname === "/" ? "/" : pathname.replace(/\/$/, "");
+
+    // Tìm anchor phù hợp (ví dụ /products/123 => khớp /products)
+    let active = anchors.find((a) => {
+      const href = a.getAttribute("href") || "";
+      if (!href) return false;
+      if (href === "/") return path === "/";
+      return (
+        path === href || path.startsWith(href + "/") || path.startsWith(href)
+      );
+    });
+
+    // fallback: exact match
+    if (!active) {
+      active = anchors.find((a) => a.getAttribute("href") === path);
     }
+
+    if (active) {
+      const rect = active.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      setUnderline({
+        left: rect.left - containerRect.left + container.scrollLeft,
+        width: rect.width,
+        opacity: 1,
+      });
+    } else {
+      // ẩn underline nếu ko có link active
+      setUnderline((p) => ({ ...p, opacity: 0, width: 0 }));
+    }
+  };
+
+  useEffect(() => {
+    updateActiveUnderline();
+
+    // ResizeObserver để bắt khi nav thay đổi kích thước
+    const ro = new ResizeObserver(() => {
+      updateActiveUnderline();
+    });
+    if (navRef.current) ro.observe(navRef.current);
+
+    // window resize
+    window.addEventListener("resize", updateActiveUnderline);
+
+    // khi font load xong (layout có thể thay đổi)
+    if ((document as any).fonts?.ready) {
+      (document as any).fonts.ready.then(updateActiveUnderline).catch(() => {});
+    }
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", updateActiveUnderline);
+    };
+    // chỉ phụ thuộc pathname — khi pathname thay đổi ta cập nhật
   }, [pathname]);
+
+  // hover/focus handler: nhận event và đo relative tới navRef
+  const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
+    const el = e.currentTarget as HTMLElement;
+    const container = navRef.current;
+    if (!container || !el) return;
+    const rect = el.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    setUnderline({
+      left: rect.left - containerRect.left + container.scrollLeft,
+      width: rect.width,
+      opacity: 1,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    // restore về active
+    updateActiveUnderline();
+  };
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[var(--background)]/70 shadow-md backdrop-blur-md">
       <div className="container-custom">
         <div className="flex h-16 items-center justify-between">
           {/* Left: Logo + Nav */}
-          <div className="flex items-center gap-10">
+          <div className="h-full flex items-center gap-10 ">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary shadow-sm ring-1 ring-primary/20">
@@ -58,30 +132,67 @@ const Header: React.FC = () => {
             </Link>
 
             {/* Nav */}
-            <nav className="hidden md:flex items-center gap-8 relative">
+            <nav
+              ref={navRef}
+              className="hidden md:flex h-full items-center gap-5 relative"
+              onMouseLeave={handleMouseLeave}
+            >
               {navLinks.map((link) => {
-                const isActive = pathname.startsWith(link.href);
+                const isActive =
+                  pathname === link.href ||
+                  (link.href !== "/" && pathname?.startsWith(link.href));
+
+                // Special handling for Categories with MegaMenu
+                if (link.href === "/categories") {
+                  return (
+                    <MegaMenu
+                      key={link.href}
+                      trigger={
+                        <Link href={link.href}>
+                          <div
+                            onMouseEnter={handleMouseEnter}
+                            className={`relative px-1 text-sm font-medium transition-colors ${
+                              isActive
+                                ? "text-foreground"
+                                : "text-muted-foreground hover:text-foreground"
+                            }`}
+                          >
+                            {link.label}
+                          </div>
+                        </Link>
+                      }
+                      delay={500}
+                    >
+                      <CategoryMegaMenu />
+                    </MegaMenu>
+                  );
+                }
+
                 return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`relative px-1 text-sm font-medium transition-colors ${
-                      isActive
-                        ? "text-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {link.label}
+                  <Link key={link.href} href={link.href}>
+                    <div
+                      onMouseEnter={handleMouseEnter}
+                      className={`relative px-1 text-sm font-medium transition-colors ${
+                        isActive
+                          ? "text-foreground"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {link.label}
+                    </div>
                   </Link>
                 );
               })}
 
               {/* Underline Indicator */}
               <span
-                className="absolute bottom-0 h-0.5 bg-primary transition-all duration-300"
+                aria-hidden
+                className="absolute bottom-0 h-[2px] rounded transition-all duration-300"
                 style={{
-                  left: underlineStyle.left,
-                  width: underlineStyle.width,
+                  transform: `translateX(${underline.left}px)`,
+                  width: underline.width,
+                  opacity: underline.opacity,
+                  background: "linear-gradient(90deg,#ef4444,#f97316)", // ví dụ gradient
                 }}
               />
             </nav>
@@ -96,7 +207,7 @@ const Header: React.FC = () => {
                 className={`transition-all duration-300 ease-in-out ${
                   showSearch
                     ? "w-96 opacity-100 scale-100 ml-2"
-                    : "w-0 opacity-0 scale-95 ml-0 pointer-events-none"
+                    : "w-0 duration-600 opacity-0 scale-95 ml-0 pointer-events-none"
                 }`}
               >
                 <Input

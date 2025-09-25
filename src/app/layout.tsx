@@ -4,6 +4,7 @@ import "@/globals.css";
 import { Providers } from "@/components/providers";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { MainLayout } from "@/components/layout/Layout";
+// import ClientLayoutSetup from "@/components/ClientLayoutSetup";
 
 const inter = Inter({
   subsets: ["latin", "vietnamese"],
@@ -75,6 +76,7 @@ export default function RootLayout({
       >
         <AntdRegistry>
           <Providers>
+            {/* <ClientLayoutSetup /> */}
             <MainLayout>{children}</MainLayout>
           </Providers>
         </AntdRegistry>

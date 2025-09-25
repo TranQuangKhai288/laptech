@@ -18,8 +18,6 @@ const Input: React.FC<InputProps> = ({
   id,
   ...props
 }) => {
-  const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
-
   const baseClasses =
     "block w-full rounded-md border transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ring-offset-[var(--background)] bg-[var(--input)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)]";
   const normalClasses =
@@ -35,10 +33,7 @@ const Input: React.FC<InputProps> = ({
   return (
     <div className="w-full">
       {label && (
-        <label
-          htmlFor={inputId}
-          className="block text-sm font-medium text-[var(--foreground)] mb-1"
-        >
+        <label className="block text-sm font-medium text-[var(--foreground)] mb-1">
           {label}
         </label>
       )}
@@ -50,7 +45,7 @@ const Input: React.FC<InputProps> = ({
           </div>
         )}
 
-        <input id={inputId} className={inputClasses} {...props} />
+        <input className={inputClasses} {...props} />
 
         {rightIcon && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
