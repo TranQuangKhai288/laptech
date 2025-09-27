@@ -115,18 +115,18 @@ const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[var(--background)]/70 shadow-md backdrop-blur-md">
-      <div className="container-custom">
-        <div className="flex h-16 items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex h-14 sm:h-16 items-center justify-between">
           {/* Left: Logo + Nav */}
-          <div className="h-full flex items-center gap-10 ">
+          <div className="h-full flex items-center gap-4 sm:gap-6 lg:gap-10">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary shadow-sm ring-1 ring-primary/20">
-                <span className="text-lg font-bold text-primary-foreground">
+              <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-primary shadow-sm ring-1 ring-primary/20">
+                <span className="text-base sm:text-lg font-bold text-primary-foreground">
                   L
                 </span>
               </div>
-              <span className="text-xl text-primary-foreground font-bold tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text">
+              <span className="text-lg sm:text-xl text-primary-foreground font-bold tracking-tight bg-gradient-to-r from-foreground to-primary bg-clip-text">
                 LapTech
               </span>
             </Link>
@@ -134,7 +134,7 @@ const Header: React.FC = () => {
             {/* Nav */}
             <nav
               ref={navRef}
-              className="hidden md:flex h-full items-center gap-5 relative"
+              className="hidden lg:flex h-full items-center gap-4 xl:gap-5 relative"
               onMouseLeave={handleMouseLeave}
             >
               {navLinks.map((link) => {
@@ -199,14 +199,14 @@ const Header: React.FC = () => {
           </div>
 
           {/* Right: Actions */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 sm:gap-4 lg:gap-6">
             {/* Search */}
             <div className="relative flex items-center">
               {/* Search input container */}
               <div
                 className={`transition-all duration-300 ease-in-out ${
                   showSearch
-                    ? "w-96 opacity-100 scale-100 ml-2"
+                    ? "w-64 sm:w-80 lg:w-96 opacity-100 scale-100 ml-2"
                     : "w-0 duration-600 opacity-0 scale-95 ml-0 pointer-events-none"
                 }`}
               >
@@ -238,24 +238,26 @@ const Header: React.FC = () => {
 
             {/* Cart */}
             <div className="relative text-muted-foreground hover:text-foreground transition-colors">
-              <CartIcon className="h-6 w-6" />
-              <span className="absolute -top-2 -right-2 h-4 w-4 rounded-full bg-primary text-xs font-medium text-primary-foreground flex items-center justify-center shadow ring-1 ring-primary/20">
+              <CartIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+              <span className="absolute -top-2 -right-2 h-3 w-3 sm:h-4 sm:w-4 rounded-full bg-primary text-xs font-medium text-primary-foreground flex items-center justify-center shadow ring-1 ring-primary/20">
                 2
               </span>
             </div>
 
-            {/* Theme Toggle */}
-            <ThemeToggle />
+            {/* Theme Toggle - Hidden on small screens */}
+            <div className="hidden sm:block">
+              <ThemeToggle />
+            </div>
 
-            {/* User */}
-            <div className="text-muted-foreground hover:text-foreground transition-colors">
-              <UserIcon className="h-6 w-6" />
+            {/* User - Hidden on small screens */}
+            <div className="hidden sm:block text-muted-foreground hover:text-foreground transition-colors">
+              <UserIcon className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
 
             {/* Mobile Menu */}
-            <div className="md:hidden text-muted-foreground hover:text-foreground transition-colors">
+            <div className="lg:hidden text-muted-foreground hover:text-foreground transition-colors">
               <svg
-                className="h-5 w-5"
+                className="h-5 w-5 sm:h-6 sm:w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

@@ -4,14 +4,14 @@
 @layer base {
   :root {
     /* Light theme - Simple hex colors */
-    --background: #eff6ff;
+    --background: #f2f4f7;
     --foreground: #171717;
     --card: #e6f0fd;
     --card-foreground: #171717;
     --popover: #eff6ff;
     --popover-foreground: #171717;
     --primary: #0ea5e9;
-    --primary-foreground: #eff6ff;
+    --primary-foreground: #f2f4f7;
     --secondary: #f1f5f9;
     --secondary-foreground: #0f172a;
     --muted: #f1f5f9;

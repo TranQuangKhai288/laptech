@@ -1,5 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
+import Link from "next/link";
 import Card from "@/components/core/Card";
 import Button from "@/components/core/Button";
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 
 const products = [
   {
-    id: 1,
+    id: "thinkpad-x1-carbon-gen-11",
     name: "ThinkPad X1 Carbon Gen 11",
     brand: "Lenovo",
     price: 45990000,
@@ -21,7 +22,7 @@ const products = [
     category: "Ultrabook",
   },
   {
-    id: 2,
+    id: "legion-5-pro",
     name: "Legion 5 Pro 16IAH7H",
     brand: "Lenovo",
     price: 35990000,
@@ -31,7 +32,7 @@ const products = [
     category: "Gaming",
   },
   {
-    id: 3,
+    id: "macbook-air-m2",
     name: "MacBook Air M2",
     brand: "Apple",
     price: 28990000,
@@ -41,7 +42,7 @@ const products = [
     category: "Ultrabook",
   },
   {
-    id: 4,
+    id: "zenbook-pro-15",
     name: "ZenBook Pro 15 OLED",
     brand: "ASUS",
     price: 42990000,
@@ -69,21 +70,21 @@ const ProductsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-4 sm:py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Sản phẩm
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Khám phá bộ sưu tập laptop đa dạng với chất lượng cao và giá cả cạnh
             tranh
           </p>
         </div>
 
         {/* Filter Categories */}
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
           {categories.map((category) => (
             <Button
               key={category.name}
@@ -96,28 +97,32 @@ const ProductsPage: React.FC = () => {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {products.map((product) => (
             <Card
               key={product.id}
               className="group hover:shadow-lg transition-shadow duration-300"
             >
-              <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg mb-4 overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
+              <Link href={`/products/${product.id}`}>
+                <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg mb-4 overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              </Link>
 
               <div className="space-y-3">
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     {product.brand}
                   </p>
-                  <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2">
-                    {product.name}
-                  </h3>
+                  <Link href={`/products/${product.id}`}>
+                    <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                      {product.name}
+                    </h3>
+                  </Link>
                 </div>
 
                 <div className="space-y-1">

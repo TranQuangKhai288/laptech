@@ -121,41 +121,41 @@ const accessories = [
 
 const CategoriesPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-4 sm:py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
             Danh mục sản phẩm
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
             Khám phá các danh mục laptop phù hợp với nhu cầu của bạn
           </p>
         </div>
 
         {/* Main Categories */}
-        <div className="mb-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <div className="mb-12 sm:mb-16">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white text-center sm:text-left">
               Laptop
             </h2>
             <Link href="/products">
               <Button
                 variant="ghost"
-                className="text-blue-600 hover:text-blue-700"
+                className="text-blue-600 hover:text-blue-700 w-full sm:w-auto"
               >
                 Xem tất cả →
               </Button>
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {categories.map((category) => (
               <Card
                 key={category.id}
                 className="group hover:shadow-xl transition-all duration-300 cursor-pointer"
               >
-                <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg mb-6 overflow-hidden">
+                <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg mb-4 sm:mb-6 overflow-hidden">
                   <img
                     src={category.image}
                     alt={category.name}
@@ -163,10 +163,10 @@ const CategoriesPage: React.FC = () => {
                   />
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                         {category.name}
                       </h3>
                       <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -182,11 +182,11 @@ const CategoriesPage: React.FC = () => {
                     <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Đặc điểm nổi bật:
                     </p>
-                    <div className="grid grid-cols-2 gap-1">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
                       {category.features.map((feature, index) => (
                         <span
                           key={index}
-                          className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
+                          className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-center"
                         >
                           {feature}
                         </span>
@@ -194,8 +194,8 @@ const CategoriesPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <div>
+                  <div className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700 gap-3">
+                    <div className="text-center sm:text-left">
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         Giá từ
                       </p>
@@ -203,7 +203,10 @@ const CategoriesPage: React.FC = () => {
                         {category.priceRange}
                       </p>
                     </div>
-                    <Button variant="primary" className="px-4 py-2 text-sm">
+                    <Button
+                      variant="primary"
+                      className="px-4 py-2 text-sm w-full sm:w-auto"
+                    >
                       Xem ngay
                     </Button>
                   </div>
@@ -214,22 +217,22 @@ const CategoriesPage: React.FC = () => {
         </div>
 
         {/* Accessories */}
-        <div className="mb-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <div className="mb-12 sm:mb-16">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white text-center sm:text-left">
               Phụ kiện
             </h2>
             <Link href="/accessories">
               <Button
                 variant="ghost"
-                className="text-blue-600 hover:text-blue-700"
+                className="text-blue-600 hover:text-blue-700 w-full sm:w-auto"
               >
                 Xem tất cả →
               </Button>
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {accessories.map((accessory) => (
               <Card
                 key={accessory.id}
@@ -245,7 +248,7 @@ const CategoriesPage: React.FC = () => {
 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-bold text-gray-900 dark:text-white">
+                    <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
                       {accessory.name}
                     </h3>
                     <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -257,11 +260,14 @@ const CategoriesPage: React.FC = () => {
                     {accessory.description}
                   </p>
 
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
                     <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
                       {accessory.priceRange}
                     </span>
-                    <Button variant="ghost" className="text-sm px-3 py-1">
+                    <Button
+                      variant="ghost"
+                      className="text-sm px-3 py-1 w-full sm:w-auto"
+                    >
                       Xem →
                     </Button>
                   </div>
@@ -273,11 +279,11 @@ const CategoriesPage: React.FC = () => {
 
         {/* Popular Brands */}
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8">
             Thương hiệu nổi bật
           </h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
             {[
               "Apple",
               "Dell",
@@ -294,15 +300,15 @@ const CategoriesPage: React.FC = () => {
             ].map((brand) => (
               <div
                 key={brand}
-                className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer group"
+                className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer group"
               >
                 <div className="text-center">
-                  <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-blue-100 dark:group-hover:bg-blue-900 transition-colors">
-                    <span className="text-lg font-bold text-gray-600 dark:text-gray-300 group-hover:text-blue-600">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3 group-hover:bg-blue-100 dark:group-hover:bg-blue-900 transition-colors">
+                    <span className="text-base sm:text-lg font-bold text-gray-600 dark:text-gray-300 group-hover:text-blue-600">
                       {brand.charAt(0)}
                     </span>
                   </div>
-                  <p className="font-medium text-gray-900 dark:text-white text-sm">
+                  <p className="font-medium text-gray-900 dark:text-white text-xs sm:text-sm">
                     {brand}
                   </p>
                 </div>

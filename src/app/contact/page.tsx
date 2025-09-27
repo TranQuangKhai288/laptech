@@ -82,48 +82,50 @@ const faqs = [
 
 const ContactPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-4 sm:py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
             Liên hệ với chúng tôi
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
             Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn một cách tốt nhất
           </p>
         </div>
 
         {/* Contact Info Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 sm:mb-16">
           {contactInfo.map((info, index) => (
             <Card
               key={index}
-              className="text-center p-6 hover:shadow-lg transition-shadow duration-300"
+              className="text-center p-4 sm:p-6 hover:shadow-lg transition-shadow duration-300"
             >
-              <div className="text-4xl mb-4">{info.icon}</div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">
+                {info.icon}
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2">
                 {info.title}
               </h3>
-              <p className="text-blue-600 dark:text-blue-400 font-semibold mb-1">
+              <p className="text-blue-600 dark:text-blue-400 font-semibold mb-1 text-sm sm:text-base">
                 {info.content}
               </p>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                 {info.subContent}
               </p>
             </Card>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 mb-12 sm:mb-16">
           {/* Contact Form */}
-          <Card className="p-8">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+          <Card className="p-6 sm:p-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">
               Gửi tin nhắn cho chúng tôi
             </h2>
 
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form className="space-y-4 sm:space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Họ và tên *
@@ -199,7 +201,7 @@ const ContactPage: React.FC = () => {
                 </label>
               </div>
 
-              <Button variant="primary" className="w-full py-3">
+              <Button variant="primary" className="w-full py-2 sm:py-3">
                 Gửi tin nhắn
               </Button>
             </form>
@@ -221,8 +223,8 @@ const ContactPage: React.FC = () => {
             </Card>
 
             {/* Branches */}
-            <Card className="p-6">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            <Card className="p-4 sm:p-6">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">
                 Chi nhánh khác
               </h3>
               <div className="space-y-4">
@@ -251,23 +253,23 @@ const ContactPage: React.FC = () => {
         </div>
 
         {/* FAQ Section */}
-        <div className="mb-16">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="mb-12 sm:mb-16">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
               Câu hỏi thường gặp
             </h2>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 px-4">
               Một số câu hỏi được khách hàng quan tâm nhiều nhất
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             {faqs.map((faq, index) => (
-              <Card key={index} className="p-6">
-                <h3 className="font-bold text-gray-900 dark:text-white mb-3">
+              <Card key={index} className="p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">
                   {faq.question}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
                   {faq.answer}
                 </p>
               </Card>
@@ -276,18 +278,23 @@ const ContactPage: React.FC = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-white">
-          <h2 className="text-3xl font-bold mb-4">Cần hỗ trợ ngay?</h2>
-          <p className="text-xl mb-8 opacity-90">
+        <div className="text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-12 text-white">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">
+            Cần hỗ trợ ngay?
+          </h2>
+          <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 opacity-90 px-4">
             Đội ngũ tư vấn chuyên nghiệp sẵn sàng hỗ trợ bạn 24/7
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" className="px-8 py-3">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+            <Button
+              variant="secondary"
+              className="px-6 sm:px-8 py-2 sm:py-3 w-full sm:w-auto"
+            >
               Gọi hotline: 1900 1234
             </Button>
             <Button
               variant="ghost"
-              className="px-8 py-3 border border-white/20 text-white hover:bg-white/10"
+              className="px-6 sm:px-8 py-2 sm:py-3 border border-white/20 text-white hover:bg-white/10 w-full sm:w-auto"
             >
               Chat trực tuyến
             </Button>
