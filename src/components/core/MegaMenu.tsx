@@ -47,6 +47,13 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
     }, 200);
   };
 
+  const handleOverlayClick = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setIsVisible(false);
+  };
+
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {
@@ -54,6 +61,20 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
       }
     };
   }, []);
+
+  // Ngăn scroll body khi menu mở
+  useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    // Cleanup khi component unmount
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isVisible]);
 
   return (
     <div className="relative h-full">
@@ -65,38 +86,45 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
         {trigger}
       </div>
 
-      {/* Backdrop overlay - chỉ che phần dưới header */}
+      {/* Backdrop overlay - che toàn bộ màn hình, làm mờ và có thể click để đóng */}
       {isVisible && (
         <div
-          className="fixed inset-x-0 z-40 bg-black/10 backdrop-blur-sm"
+          className={`fixed inset-0 z-40 bg-black/30 backdrop-blur-sm cursor-pointer transition-all duration-300 ease-out ${
+            isVisible ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={handleOverlayClick}
           style={{
             top: "4rem", // Bắt đầu từ dưới header
-            bottom: 0,
           }}
         />
       )}
 
       {/* Mega Menu Content */}
       <div
-        className={`fixed left-0 right-0 z-50 bg-white dark:bg-gray-800 shadow-2xl border-t border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-400 ease-out ${className}`}
+        className={`fixed left-0 right-0 z-50 border-t bg-[var(--background)]/70 backdrop-blur-md border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-400 ease-out ${className}`}
         style={{
           top: "4rem", // Header height
-          height: isVisible ? "40vh" : "0vh",
+          height: isVisible ? "100vh" : "0vh",
           opacity: isVisible ? 1 : 0,
           transform: isVisible ? "translateY(0)" : "translateY(-10px)",
+          pointerEvents: isVisible ? "all" : "none",
         }}
-        onMouseEnter={handleMenuMouseEnter}
-        onMouseLeave={handleMenuMouseLeave}
       >
-        <div className="container mx-auto px-4 py-6 h-full overflow-y-auto">
-          <div
-            className={`transition-all duration-300 ${
-              isVisible
-                ? "opacity-100 transform translate-y-0 delay-150"
-                : "opacity-0 transform translate-y-2"
-            }`}
-          >
-            {children}
+        <div
+          className="container flex min-w-screen shadow-2xl bg-white dark:bg-gray-800 mx-auto items-center justify-center"
+          onMouseEnter={handleMenuMouseEnter}
+          onMouseLeave={handleMenuMouseLeave}
+        >
+          <div className="px-4 py-8  h-[60%] w-[80%] max-w-[100rem] bg-white dark:bg-gray-800 overflow-y-auto">
+            <div
+              className={`transition-all duration-300 ${
+                isVisible
+                  ? "opacity-100 transform translate-y-0 delay-150"
+                  : "opacity-0 transform translate-y-2"
+              }`}
+            >
+              {children}
+            </div>
           </div>
         </div>
       </div>

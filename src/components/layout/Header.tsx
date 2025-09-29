@@ -10,6 +10,7 @@ import { UserIcon } from "../icon/user";
 import MegaMenu from "../core/MegaMenu";
 import SimpleMegaMenu from "../core/SimpleMegaMenu";
 import CategoryMegaMenu from "./CategoryMegaMenu";
+import { useCartContext } from "@/contexts/CartContext";
 
 const navLinks = [
   { href: "/products", label: "Sản phẩm" },
@@ -24,6 +25,9 @@ const Header: React.FC = () => {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement | null>(null);
   const [showSearch, setShowSearch] = useState(false);
+  const { totalItems } = useCartContext();
+  const [mounted, setMounted] = useState(false);
+
   const [underline, setUnderline] = useState<Underline>({
     left: 0,
     width: 0,
@@ -69,7 +73,9 @@ const Header: React.FC = () => {
       setUnderline((p) => ({ ...p, opacity: 0, width: 0 }));
     }
   };
-
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   useEffect(() => {
     updateActiveUnderline();
 
@@ -114,7 +120,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[var(--background)]/70 shadow-md backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full shadow-md bg-[var(--background)]/70 backdrop-blur-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-14 sm:h-16 items-center justify-between">
           {/* Left: Logo + Nav */}
@@ -237,12 +243,16 @@ const Header: React.FC = () => {
             </div>
 
             {/* Cart */}
-            <div className="relative text-muted-foreground hover:text-foreground transition-colors">
-              <CartIcon className="h-5 w-5 sm:h-6 sm:w-6" />
-              <span className="absolute -top-2 -right-2 h-3 w-3 sm:h-4 sm:w-4 rounded-full bg-primary text-xs font-medium text-primary-foreground flex items-center justify-center shadow ring-1 ring-primary/20">
-                2
-              </span>
-            </div>
+            <Link href="/cart">
+              <div className="relative text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+                <CartIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+                {typeof window !== "undefined" && mounted && totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 h-3 w-3 sm:h-4 sm:w-4 rounded-full bg-red-500 text-xs font-medium text-white flex items-center justify-center">
+                    {totalItems > 99 ? "99+" : totalItems}
+                  </span>
+                )}
+              </div>
+            </Link>
 
             {/* Theme Toggle - Hidden on small screens */}
             <div className="hidden sm:block">

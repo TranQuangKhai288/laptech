@@ -70,9 +70,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className="scroll-smooth">
+    <html lang="vi" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${inter.className} antialiased bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300`}
+        className={`${inter.className} antialiased bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300 `}
       >
         <AntdRegistry>
           <Providers>

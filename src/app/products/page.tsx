@@ -1,64 +1,19 @@
+"use client";
 import React from "react";
-import { Metadata } from "next";
 import Link from "next/link";
 import Card from "@/components/core/Card";
 import Button from "@/components/core/Button";
+import AddToCartButton from "@/components/cart/AddToCartButton";
+import { mockProducts } from "@/data/mockProducts";
 
-export const metadata: Metadata = {
-  title: "Sản phẩm - LapTech",
-  description:
-    "Khám phá bộ sưu tập laptop đa dạng với chất lượng cao và giá cả cạnh tranh",
-};
-
-const products = [
-  {
-    id: "thinkpad-x1-carbon-gen-11",
-    name: "ThinkPad X1 Carbon Gen 11",
-    brand: "Lenovo",
-    price: 45990000,
-    originalPrice: 52990000,
-    image: "/images/thinkpad-x1-carbon.png",
-    specs: ["Intel Core i7-1365U", "16GB RAM", "512GB SSD", "14 inch 2.8K"],
-    category: "Ultrabook",
-  },
-  {
-    id: "legion-5-pro",
-    name: "Legion 5 Pro 16IAH7H",
-    brand: "Lenovo",
-    price: 35990000,
-    originalPrice: 42990000,
-    image: "/images/legion-5-pro.png",
-    specs: ["Intel Core i7-12700H", "16GB RAM", "512GB SSD", "RTX 3070Ti"],
-    category: "Gaming",
-  },
-  {
-    id: "macbook-air-m2",
-    name: "MacBook Air M2",
-    brand: "Apple",
-    price: 28990000,
-    originalPrice: 32990000,
-    image: "/images/macbook-air-m2.png",
-    specs: ["Apple M2", "8GB RAM", "256GB SSD", "13.6 inch Liquid Retina"],
-    category: "Ultrabook",
-  },
-  {
-    id: "zenbook-pro-15",
-    name: "ZenBook Pro 15 OLED",
-    brand: "ASUS",
-    price: 42990000,
-    originalPrice: 48990000,
-    image: "/images/zenbook-pro-15.png",
-    specs: ["Intel Core i7-12700H", "32GB RAM", "1TB SSD", "15.6 inch 4K OLED"],
-    category: "Workstation",
-  },
-];
+// Metadata moved to layout or parent component when using "use client"
 
 const categories = [
-  { name: "Tất cả", count: products.length, active: true },
-  { name: "Gaming", count: 1, active: false },
-  { name: "Ultrabook", count: 2, active: false },
-  { name: "Workstation", count: 1, active: false },
-  { name: "Văn phòng", count: 0, active: false },
+  { name: "Tất cả", count: mockProducts.length, active: true },
+  { name: "MacBook", count: 1, active: false },
+  { name: "Ultrabook", count: 1, active: false },
+  { name: "Gaming", count: 0, active: false },
+  { name: "Workstation", count: 0, active: false },
 ];
 
 const ProductsPage: React.FC = () => {
@@ -70,7 +25,7 @@ const ProductsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-4 sm:py-8">
+    <div className="min-h-screen sm:py-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
@@ -98,64 +53,80 @@ const ProductsPage: React.FC = () => {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          {products.map((product) => (
-            <Card
-              key={product.id}
-              className="group hover:shadow-lg transition-shadow duration-300"
-            >
-              <Link href={`/products/${product.id}`}>
-                <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg mb-4 overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              </Link>
+          {mockProducts.map((product) => {
+            const mainImage =
+              product.images.find((img) => img.isMain) || product.images[0];
 
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {product.brand}
-                  </p>
-                  <Link href={`/products/${product.id}`}>
-                    <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                      {product.name}
-                    </h3>
-                  </Link>
-                </div>
+            return (
+              <Card
+                key={product.id}
+                className="group hover:shadow-lg transition-shadow duration-300"
+              >
+                <Link href={`/products/${product.id}`}>
+                  <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg mb-4 overflow-hidden">
+                    {mainImage ? (
+                      <img
+                        src={mainImage.url}
+                        alt={mainImage.alt}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <span className="text-4xl">📱</span>
+                      </div>
+                    )}
+                  </div>
+                </Link>
 
-                <div className="space-y-1">
-                  {product.specs.map((spec, index) => (
-                    <p
-                      key={index}
-                      className="text-xs text-gray-600 dark:text-gray-300"
-                    >
-                      • {spec}
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {product.brand.name}
                     </p>
-                  ))}
-                </div>
+                    <Link href={`/products/${product.id}`}>
+                      <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                        {product.name}
+                      </h3>
+                    </Link>
+                  </div>
 
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-red-600 dark:text-red-400">
-                    {formatPrice(product.price)}
-                  </span>
-                  <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
-                    {formatPrice(product.originalPrice)}
-                  </span>
-                </div>
+                  <div className="space-y-1">
+                    {product.features.slice(0, 3).map((feature, index) => (
+                      <p
+                        key={index}
+                        className="text-xs text-gray-600 dark:text-gray-300"
+                      >
+                        • {feature}
+                      </p>
+                    ))}
+                  </div>
 
-                <div className="flex gap-2">
-                  <Button variant="primary" className="flex-1 text-sm py-2">
-                    Thêm vào giỏ
-                  </Button>
-                  <Button variant="ghost" className="px-3 py-2">
-                    <span className="text-sm">♡</span>
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold text-red-600 dark:text-red-400">
+                      {formatPrice(product.price)}
+                    </span>
+                    {product.originalPrice && (
+                      <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
+                        {formatPrice(product.originalPrice)}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex gap-2">
+                    <AddToCartButton
+                      product={product}
+                      size="sm"
+                      text="Thêm vào giỏ"
+                      className="flex-1 text-sm py-2"
+                    />
+                    <Button variant="ghost" className="px-3 py-2">
+                      <span className="text-sm">♡</span>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            );
+          })}
         </div>
 
         {/* Load More */}

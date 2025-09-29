@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 interface UseLocalStorageOptions<T> {
   defaultValue: T;
@@ -27,7 +27,13 @@ export const useLocalStorage = <T>(
     },
   };
 
-  const ser = serializer || defaultSerializer;
+  const ser = useMemo(() => serializer || defaultSerializer, [serializer]);
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === "undefined") {
@@ -35,7 +41,7 @@ export const useLocalStorage = <T>(
     }
 
     try {
-      const item = window.localStorage.getItem(key);
+      const item = isClient ? window.localStorage.getItem(key) : null;
       return item ? ser.read(item) : defaultValue;
     } catch (error) {
       console.warn(`Error reading localStorage key "${key}":`, error);
@@ -66,7 +72,6 @@ export const useLocalStorage = <T>(
       if (typeof window !== "undefined") {
         window.localStorage.setItem(key, ser.write(valueToStore));
 
-        // Dispatch storage event for cross-tab synchronization
         window.dispatchEvent(
           new StorageEvent("storage", {
             key,
@@ -87,7 +92,6 @@ export const useLocalStorage = <T>(
       if (typeof window !== "undefined") {
         window.localStorage.removeItem(key);
 
-        // Dispatch storage event for cross-tab synchronization
         window.dispatchEvent(
           new StorageEvent("storage", {
             key,
@@ -101,7 +105,6 @@ export const useLocalStorage = <T>(
     }
   };
 
-  // Listen for storage changes from other tabs
   useEffect(() => {
     if (typeof window === "undefined") return;
 

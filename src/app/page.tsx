@@ -3,12 +3,13 @@ import React from "react";
 import DealBanner from "@/modules/home/component/panel";
 import ProductCategories from "@/modules/home/component/product-categories";
 import Deals from "@/modules/home/component/deals";
+import FeaturedProducts from "@/modules/home/component/featured-products";
 
 export default function HomePage() {
   return (
     <div className="w-full">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <section className="mb-8 sm:mb-12">
+        <section className="mt-4 mb-8 sm:mb-12">
           <DealBanner />
         </section>
         <section className="mb-8 sm:mb-12">
@@ -27,6 +28,12 @@ export default function HomePage() {
             </h3>
             <Deals />
           </div>
+        </section>
+        <section className="mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+            Sản phẩm nổi bật 🌟
+          </h2>
+          <FeaturedProducts />
         </section>
       </div>
     </div>
